@@ -20,7 +20,7 @@ const Page = () => {
         <div className='flex items-center justify-between'>
           <h3>Projects</h3>
           <CreateProject />
-
+          
         </div>
         <Separator className='bg-primary/10 my-2' />
         Hello
