@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar/Navbar';
 import { ThemeProvider } from '@/components/theme-provider';
 import { SessionProvider } from 'next-auth/react'
 import React, { FC, ReactNode } from 'react'
+import { GeistSans } from "geist/font/sans";
 
 interface props {
     children: ReactNode
@@ -10,7 +11,7 @@ interface props {
 
 const Layout: FC<props> = (props) => {
     return (
-        <html lang='en'>
+        <html lang='en' className={GeistSans.className}>
             <head>
                 <title>Dashboard</title>
             </head>

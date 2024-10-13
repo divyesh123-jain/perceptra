@@ -7,6 +7,7 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Separator } from "@/components/ui/separator";
+import { Description } from "@radix-ui/react-dialog";
 
 type FieldType = "text" | "number" | "email" | "textarea";
 
@@ -14,7 +15,6 @@ interface Field {
     id: string;
     label: string;
     type: FieldType;
-    placeholder: string;
     required: boolean
 }
 
@@ -27,7 +27,6 @@ const FormBuilder = () => {
             id: Math.random().toString(36).substring(2, 9),
             label: "",
             type: "text",
-            placeholder: "",
             required: true
         };
         setFields([...fields, newField]);
@@ -44,13 +43,35 @@ const FormBuilder = () => {
     };
 
 
-    // const saveForm = () => {
-
-    // };
+    const saveForm = () => {
+        const obj = {
+            name :"JSConf Feedback",
+            description:"Your feedbacks will help us in organising a better JSConf next time.",
+            format:[
+                {
+                    "id": "4obirrb",
+                    "label": "Name",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "id": "wsknj1l",
+                    "label": "Rating out of 10",
+                    "type": "number",
+                    "required": true
+                }
+            ]
+        }
+        console.log(obj)
+    };
 
     return (
-        <div className="flex flex-col p-5 my-6 bg-secondary border rounded-md shadow-md max-w-[800px] w-full mx-auto">
+        <div className="flex flex-col p-5 my-6 bg-secondary/20 border rounded-md shadow-md max-w-[900px]  w-full mx-auto">
+            <div className="flex justify-between">
+
             <h2 className="text-2xl font-semibold mb-5">Form Builder</h2>
+            <Button onClick={()=>saveForm()} className="bg-primary">Update</Button>
+            </div>
             {fields.map((field) => (
                 <div key={field.id} className="flex flex-col mb-4 border p-4 gap-3 rounded-md bg-primary-foreground">
                     <div className="grid grid-cols-1 items-center mb-2 gap-3">
@@ -112,9 +133,11 @@ const FormBuilder = () => {
                 </div>
             ))}
 
-            <Separator className="my-5" />
+            {/* <Separator className="my-5" /> */}
 
-            <Button onClick={addField} className="bg-primary text-secondary">Add Field</Button>
+
+            <Button onClick={addField} className="bg-primary/50 text-secondary">Add Field</Button>
+
         </div>
     );
 };
