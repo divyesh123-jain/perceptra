@@ -13,6 +13,7 @@ import { Button } from '../ui/button'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
+import { useSession } from 'next-auth/react';
 
 
 
@@ -23,10 +24,9 @@ export type FormType = {
 
 const CreateFrom = () => {
     const { register, handleSubmit } = useForm<FormType>()
-    const onSubmit: SubmitHandler<FormType> = (data) => {
-        console.log(data)
+    const onSubmit = () => {
+        
     }
-
     return (
         <Sheet>
             <SheetTrigger>

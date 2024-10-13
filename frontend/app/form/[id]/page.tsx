@@ -32,7 +32,7 @@ const Form = () => {
   return (
     <>
       <div className='flex flex-col items-center'>
-        <h3 className='font-normal'>{obj.name}</h3>
+        <h3 className='font-semibold'>{obj.name}</h3>
         <p className='text-lg text-secondary/70 font-normal'>
           {obj.description}
         </p>

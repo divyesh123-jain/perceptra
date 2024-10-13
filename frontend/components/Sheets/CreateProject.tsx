@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react'
 import { useForm, SubmitHandler, Controller } from "react-hook-form"
 import {
@@ -19,6 +21,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { useSession } from 'next-auth/react'
 
 
 enum eventType {
@@ -28,15 +31,25 @@ enum eventType {
 
 
 export type projectForm = {
-    name: string
-    type: eventType
-    desc: string
+    event_name: string
+    event_type: eventType
+    event_desc: string
 }
 
 const CreateProject = () => {
     const { register, handleSubmit, control } = useForm<projectForm>()
-    const onSubmit: SubmitHandler<projectForm> = (data) => {
-        console.log(data)
+    const { data: session } = useSession()
+    const onSubmit: SubmitHandler<projectForm> = async (payload) => {
+        const res = await fetch("/api/event", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ ...payload, owner: session?.user?.email })
+
+        })
+        const result = await res.json()
+        console.log(result)
     }
 
     return (
@@ -49,11 +62,11 @@ const CreateProject = () => {
                     <SheetDescription>
                         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 mt-5">
                             <Label className='text-primary' htmlFor="name">Project Name</Label>
-                            <Input type="text" {...register("name")} id="name" />
+                            <Input type="text" {...register("event_name")} id="name" />
 
                             <Label className='text-primary' htmlFor='type'>Project Type</Label>
                             <Controller
-                                name="type"
+                                name="event_type"
                                 control={control}
                                 render={({ field }) => (
                                     <Select value={field.value} onValueChange={field.onChange}>
@@ -75,7 +88,7 @@ const CreateProject = () => {
                             />
 
                             <Label className='text-primary' htmlFor="desc">Project Description</Label>
-                            <Textarea  {...register("desc")} id="desc" />
+                            <Textarea  {...register("event_desc")} id="desc" />
                             <Button type="submit">Create</Button>
                         </form>
                     </SheetDescription>
