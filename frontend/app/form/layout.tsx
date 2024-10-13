@@ -8,7 +8,7 @@ interface props {
 const Layout: FC<props> = ({children}) => {
   return (
     <html lang='en' className={GeistSans.className}>
-      <body className='flex flex-col items-center justify-center gap-6'>
+      <body className='flex flex-col items-center min-h-[99vh] justify-center gap-6'>
         {children}
       </body>
     </html>  
