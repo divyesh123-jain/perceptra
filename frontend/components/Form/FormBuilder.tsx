@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
@@ -18,8 +18,13 @@ interface Field {
     required: boolean
 }
 
-const FormBuilder = () => {
-    const [fields, setFields] = useState<Field[]>([]);
+interface props {
+    data:any
+}
+
+const FormBuilder : FC  <props> = ({data}) => {
+    const format = JSON.parse(data?.form_format)
+    const [fields, setFields] = useState<Field[]>(format.format);
 
     // Function to add a new field
     const addField = () => {
@@ -43,26 +48,22 @@ const FormBuilder = () => {
     };
 
 
-    const saveForm = () => {
-        const obj = {
+    const saveForm = async () => {
+        const obj = JSON.stringify({
             name :"JSConf Feedback",
             description:"Your feedbacks will help us in organising a better JSConf next time.",
-            format:[
-                {
-                    "id": "4obirrb",
-                    "label": "Name",
-                    "type": "text",
-                    "required": true
-                },
-                {
-                    "id": "wsknj1l",
-                    "label": "Rating out of 10",
-                    "type": "number",
-                    "required": true
-                }
-            ]
+            format:fields
+        })
+        const res = await fetch(`/api/form/${data["$id"]}`, {
+            method:"PATCH",
+            body:JSON.stringify({...data, form_format : obj})
+        })
+        const r = await res.json()
+        if(res.status===200){
+            console.log("Done")
+        }else{
+            console.log(r)
         }
-        console.log(obj)
     };
 
     return (

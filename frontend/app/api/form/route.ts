@@ -7,6 +7,11 @@ export async function POST(
   
     const url = `${baseURL}/databases/${perceptradb}/collections/${formCollection}/documents`
     const body = await req.json()
+    body.form_format = JSON.stringify({
+        name: body.form_name,
+        description: body.form_desc,
+        format: []
+    })
     const payload = {
       documentId: 'unique()',
       data: body
@@ -17,6 +22,7 @@ export async function POST(
       headers: { ...headers},
       body: JSON.stringify(payload)
     })
+
     const r = await request.json()
     if (!request.ok) {
       return NextResponse.json({ error: r }, { status: 500 })

@@ -2,43 +2,41 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { GetServerSidePropsContext } from 'next'
 import React from 'react'
 
-const Form = () => {
-  const obj = {
-    name: "JSConf Feedback",
-    description: "Your feedbacks will help us in organising a better JSConf next time.",
-    format: [
-      {
-        "id": "4obirrb",
-        "label": "Name",
-        "type": "text",
-        "required": true
-      },
-      {
-        "id": "wsknj1l",
-        "label": "Rating out of 10",
-        "type": "number",
-        "required": true
-      },
-      {
-        "id": "wsknj12",
-        "label": "Feedback",
-        "type": "textarea",
-        "required": true
-      }
-    ]
+interface FormPageProps {
+  params: {
+    id: string
   }
+}
+
+async function fetchData(id: string) {
+  const res = await fetch(`http://localhost:3000/api/form/${id}`, {
+    cache: 'no-store', // Prevent caching if you want fresh data
+  })
+  if (!res.ok) {
+    throw new Error('Failed to fetch data')
+  }
+  console.log(res)
+  return res.json()
+}
+
+
+
+const Form  = async ({params}:FormPageProps) => {
+  const obj = await fetchData(params.id)
+  const format = JSON.parse(obj.form_format)
   return (
     <>
       <div className='flex flex-col items-center'>
-        <h3 className='font-semibold'>{obj.name}</h3>
+        <h3 className='font-semibold'>{format.name}</h3>
         <p className='text-lg text-secondary/70 font-normal'>
-          {obj.description}
+          {format.description}
         </p>
       </div>
       <form className='flex flex-col gap-3 max-w-[800px] w-full'>
-        {obj.format.map((field) => {
+        {format.format.map((field :any) => {
           if (field.type === "textarea") {
             return (
               <div key={field.id} className='flex flex-col gap-3'>
