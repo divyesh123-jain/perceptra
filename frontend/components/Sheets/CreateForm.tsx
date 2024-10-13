@@ -18,14 +18,24 @@ import { useSession } from 'next-auth/react';
 
 
 export type FormType = {
-    name: string
-    desc: string
+    form_name: string
+    form_desc: string
 }
 
-const CreateFrom = () => {
+const CreateFrom = ({id}:{id : string}) => {
     const { register, handleSubmit } = useForm<FormType>()
-    const onSubmit = () => {
-        
+    const {data:session} = useSession()
+    const onSubmit: SubmitHandler<FormType> = async (data) => {
+        const payload = {
+            ...data,
+            owner: session?.user?.email as string,
+            event_id: id,
+        }
+        const result = await fetch("/api/form", {
+            method:"POST",
+            body:JSON.stringify(payload)
+        })
+        console.log(await result.json())
     }
     return (
         <Sheet>
@@ -37,11 +47,11 @@ const CreateFrom = () => {
                     <SheetDescription>
                         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 mt-5">
                             <Label className='text-primary' htmlFor="name">Form Heading</Label>
-                            <Input type="text" {...register("name")} id="name" />
+                            <Input type="text" {...register("form_name")} id="name" />
 
 
-                            <Label className='text-primary' htmlFor="desc">Form Description</Label>
-                            <Textarea  {...register("desc")} id="desc" />
+                            <Label className='text-primary' htmlFor="form_desc">Form Description</Label>
+                            <Textarea  {...register("form_desc")} id="form_desc" />
                             <Button type="submit">Create</Button>
                         </form>
                     </SheetDescription>

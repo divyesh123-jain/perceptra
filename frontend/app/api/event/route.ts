@@ -39,8 +39,14 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
   try {
-    console.log(session)
-    const url = `${baseURL}/databases/${perceptradb}/collections/${eventsCollection}/documents`
+   
+    const query = JSON.stringify({
+      "method": "equal",
+      "attribute": "owner",
+      "values": [session.user?.email as string]
+    })
+    const url = new URL(`${baseURL}/databases/${perceptradb}/collections/${eventsCollection}/documents`)
+    url.searchParams.append("queries[0]", query)
     const response = await fetch(url, {
       headers:{...headers},
     })
