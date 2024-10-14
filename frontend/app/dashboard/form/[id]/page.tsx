@@ -27,7 +27,7 @@ const FormBuilderContainer = () => {
             <div className='mt-10 '>
                 <div className='flex items-center justify-between'>
                     <h3>Form Builder</h3>
-                    {/* <CreateFrom /> */}
+                    {/* <CreateFrom id = {id} /> */}
                 </div>
                 <Separator className='bg-primary/10 my-2' />
                 {data && <FormBuilder data  ={data} />}
