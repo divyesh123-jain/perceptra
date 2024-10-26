@@ -3,16 +3,16 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Analytics from './AnalyticsDashboard';
 
-interface SentimentData {
-  sentiments: Array<any>;
-}
+// interface SentimentData {
+//   sentiments: Array<any>;
+// }
 
-interface SummaryData {
-  averageRating: number;
-  overallSummary: string;
-  keyPoints: Array<string>;
-  recommendations: Array<string>;
-}
+// interface SummaryData {
+//   averageRating: number;
+//   overallSummary: string;
+//   keyPoints: Array<string>;
+//   recommendations: Array<string>;
+// }
 
 
 const fetchFeedbackData = async (id: string) => {
@@ -56,6 +56,8 @@ const AnalyticsPage = ({ id }: { id: string }) => {
   const { data: feedbackData, error: feedbackError, isLoading: feedbackLoading } = useQuery({
     queryKey: ['feedback', id],
     queryFn: () => fetchFeedbackData(id),
+    staleTime: Infinity, 
+    cacheTime: Infinity,
   });
 
   
@@ -63,12 +65,16 @@ const AnalyticsPage = ({ id }: { id: string }) => {
     queryKey: ['sentiment', feedbackData],
     queryFn: () => feedbackData ? fetchSentimentData(feedbackData) : Promise.reject(),
     enabled: !!feedbackData,
+    staleTime: Infinity, 
+    cacheTime: Infinity,
   });
 
   const { data: summaryData, error: summaryError, isLoading: summaryLoading } = useQuery({
     queryKey: ['summary', feedbackData],
     queryFn: () => feedbackData ? fetchSummaryData(feedbackData) : Promise.reject(),
     enabled: !!feedbackData,
+    staleTime: Infinity, 
+    cacheTime: Infinity,
   });
 
   

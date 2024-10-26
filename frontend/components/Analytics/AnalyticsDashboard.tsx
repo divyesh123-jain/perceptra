@@ -5,6 +5,7 @@ import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 
 
 
@@ -59,15 +60,24 @@ const AnalyticsDashboard = ({ sentimentData, summaryData }: { sentimentData: Sen
     return (
         <>
          <div className="p-6 max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+         <div className="flex items-center justify-between">
+         <h3 className="font-medium">Form Analysis</h3>
+         <div className="flex items-center gap-6">
+         <Button>Form Builder</Button>
+         <Button variant={"secondary"}>Recalculate</Button>
+         </div>
+         </div>
+      <div className="flex flex-col  gap-6">
+        
+
         {/* Sentiment Analysis Section */}
-        <div className="space-y-6">
-          <Card>
+        <div className="mt-10 grid grid-cols-3 gap-6">
+          <Card className="bg-primary text-secondary">
             <CardHeader>
               <CardTitle>Sentiment Distribution</CardTitle>
               <CardDescription>Overview of feedback sentiments</CardDescription>
             </CardHeader>
-            <CardContent className="h-[300px]">
+            <CardContent className="h-[250px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -92,7 +102,7 @@ const AnalyticsDashboard = ({ sentimentData, summaryData }: { sentimentData: Sen
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-primary text-secondary col-span-2">
             <CardHeader>
               <CardTitle>Ratings Trend</CardTitle>
               <CardDescription>User ratings over time</CardDescription>
@@ -117,7 +127,7 @@ const AnalyticsDashboard = ({ sentimentData, summaryData }: { sentimentData: Sen
 
         {/* Feedback Summary Section */}
         <div className="space-y-6">
-          <Card>
+          <Card className="bg-primary text-secondary">
             <CardHeader>
               <CardTitle>Overall Summary</CardTitle>
               <CardDescription>
@@ -125,21 +135,21 @@ const AnalyticsDashboard = ({ sentimentData, summaryData }: { sentimentData: Sen
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-slate-600 mb-4">{summaryData.overallSummary}</p>
-              <div className="space-y-4">
-                <div>
+              <p className="text-secondary/60 mb-4">{summaryData.overallSummary}</p>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="bg-secondary/10 p-4 rounded-sm">
                   <h4 className="font-medium mb-2">Key Points</h4>
                   <ul className="list-disc pl-4 space-y-1">
                     {summaryData.keyPoints.map((point, index) => (
-                      <li key={index} className="text-slate-600">{point}</li>
+                      <li key={index} className="text-secondary/60">{point}</li>
                     ))}
                   </ul>
                 </div>
-                <div>
+                <div className="bg-yellow-800/30 p-4 rounded-sm">
                   <h4 className="font-medium mb-2">Recommendations</h4>
                   <ul className="list-disc pl-4 space-y-1">
                     {summaryData.recommendations.map((rec, index) => (
-                      <li key={index} className="text-slate-600">{rec}</li>
+                      <li key={index} className="text-secondary/60">{rec}</li>
                     ))}
                   </ul>
                 </div>
@@ -147,15 +157,15 @@ const AnalyticsDashboard = ({ sentimentData, summaryData }: { sentimentData: Sen
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-primary text-secondary">
             <CardHeader>
               <CardTitle>Recent Feedback</CardTitle>
               <CardDescription>Latest user sentiments</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-4 ">
                 {sentimentData.sentiments.map((item, index) => (
-                  <div key={index} className="border rounded-lg p-4">
+                  <div key={index} className="bg-secondary/10 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-2">
                       <span className="font-medium">{item.name}</span>
                       <Badge 
@@ -166,10 +176,10 @@ const AnalyticsDashboard = ({ sentimentData, summaryData }: { sentimentData: Sen
                         {item.sentiment}
                       </Badge>
                     </div>
-                    <p className="text-slate-600 mb-2">{item.feedback}</p>
+                    <p className="text-secondary mb-2">{item.feedback}</p>
                     <div className="flex justify-between items-center text-sm">
-                      <span className="text-slate-500">Rating: {item.rating}/5</span>
-                      <span className="text-slate-500">{item.explanation}</span>
+                      <span className="text-secondary">Rating: {item.rating}/5</span>
+                      <span className="text-secondary">{item.explanation}</span>
                     </div>
                   </div>
                 ))}
